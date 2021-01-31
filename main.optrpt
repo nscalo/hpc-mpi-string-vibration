@@ -1,0 +1,1414 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 18.0.3.222 Build 20180410
+
+Compiler options: -I/opt/intel/compilers_and_libraries_2018.3.222/linux/mpi/intel64/include -qopt-report=5 -axMIC-AVX512 -qopenmp -o app -L/opt/intel/compilers_and_libraries_2018.3.222/linux/mpi/intel64/lib/release_mt -L/opt/intel/compilers_and_libraries_2018.3.222/linux/mpi/intel64/lib -Xlinker --enable-new-dtags -Xlinker -rpath -Xlinker /opt/intel/compilers_and_libraries_2018.3.222/linux/mpi/intel64/lib/release_mt -Xlinker -rpath -Xlinker /opt/intel/compilers_and_libraries_2018.3.222/linux/mpi/intel64/lib -Xlinker -rpath -Xlinker /opt/intel/mpi-rt/2017.0.0/intel64/lib/release_mt -Xlinker -rpath -Xlinker /opt/intel/mpi-rt/2017.0.0/intel64/lib -lmpicxx -lmpifort -lmpi -lmpigi -ldl -lrt -lpthread
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: 10000
+  -inline-max-per-compile: 500000
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: main(int, char **)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (main(int, char **)) [1/5=20.0%] main.cc(54,33)
+  -> EXTERN: (55,13) MPI_Init(int *, char ***)
+  -> EXTERN: (57,5) printf(const char *, ...)
+  -> EXTERN: (58,5) MPI_Abort(MPI_Comm, int)
+  -> INLINE (MANUAL): (64,13) atof(const char *) (isz = 5) (sz = 12)
+    -> EXTERN: /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:(28,10) strtod(const char *, char **)
+  -> EXTERN: (69,3) MPI_Comm_size(MPI_Comm, int *)
+  -> EXTERN: (70,3) MPI_Comm_rank(MPI_Comm, int *)
+  -> INLINE (MANUAL): (72,23) atoi(const char *) (isz = 7) (sz = 14)
+    -> EXTERN: /usr/include/stdlib.h:(280,16) strtol(const char *, char **, int)
+  -> INLINE (MANUAL): (73,32) atoi(const char *) (isz = 7) (sz = 14)
+    -> EXTERN: /usr/include/stdlib.h:(280,16) strtol(const char *, char **, int)
+  -> EXTERN: (74,3) __assert_fail(const char *, const char *, unsigned int, const char *)
+  -> EXTERN: (78,29) _mm_malloc(unsigned long long, unsigned long long)
+  -> EXTERN: (79,29) _mm_malloc(unsigned long long, unsigned long long)
+  -> EXTERN: (82,28) _mm_malloc(unsigned long long, unsigned long long)
+  -> INLINE: (84,5) initialize_buffers(float, long, float *, float *) (isz = 102) (sz = 113)
+    -> EXTERN: (47,23) sinf(float)
+    -> EXTERN: (51,17) L(float, float, float)
+    -> EXTERN: (51,78) L(float, float, float)
+  -> EXTERN: (87,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> EXTERN: (88,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> INLINE: (91,23) simulate_ref(float, long, int, float *, float *, int, int, long) (isz = 89) (sz = 110)
+    -> EXTERN: (32,25) L(float, float, float)
+    -> EXTERN: (37,5) MPI_Allgather(const void *, int, MPI_Datatype, void *, int, MPI_Datatype, MPI_Comm)
+  -> INLINE: (101,5) initialize_buffers(float, long, float *, float *) (isz = 102) (sz = 113)
+    -> EXTERN: (47,23) sinf(float)
+    -> EXTERN: (51,17) L(float, float, float)
+    -> EXTERN: (51,78) L(float, float, float)
+  -> EXTERN: (103,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> EXTERN: (104,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> EXTERN: (108,21) omp_get_wtime()
+  -> EXTERN: (109,20) simulate(float, long, int, float *, float *, int, int, long)
+  -> EXTERN: (110,21) omp_get_wtime()
+  -> EXTERN: (130,7) printf(const char *, ...)
+  -> EXTERN: (133,7) printf(const char *, ...)
+  -> EXTERN: (137,3) MPI_Finalize()
+
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at main.cc(45,1) inlined into main.cc(84,5)
+remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at main.cc(30,1) inlined into main.cc(91,23)
+remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at main.cc(94,1)
+remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at main.cc(45,1) inlined into main.cc(101,5)
+remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at main.cc(115,1)
+remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(84,5)
+<Peeled loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(84,5)
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.165
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 116 
+   remark #15477: vector cost: 5.680 
+   remark #15478: estimated potential speedup: 18.060 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 3 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(84,5)
+<Remainder loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(30,1) inlined into main.cc(91,23)
+<Peeled loop for vectorization>
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.077
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(30,1) inlined into main.cc(91,23)
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.060
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15450: unmasked unaligned unit stride loads: 4 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 131 
+   remark #15477: vector cost: 26.930 
+   remark #15478: estimated potential speedup: 4.320 
+   remark #15484: vector function calls: 1 
+   remark #15487: type converts: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: L(float, float, float) with simdlen=16, actual parameter types: (uniform,uniform,vector)   [ main.cc(32,25) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -vecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at main.cc(30,1) inlined into main.cc(91,23)
+<Remainder loop for vectorization>
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.077
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(94,1)
+   remark #25399: memcopy generated
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at main.cc(94,1)
+      remark #15389: vectorization support: reference d_ref has unaligned access   [ main.cc(96,7) ]
+      remark #15389: vectorization support: reference d_ref_temp has unaligned access   [ main.cc(96,18) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15305: vectorization support: vector length 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.750
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15451: unmasked unaligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 5 
+      remark #15477: vector cost: 2.000 
+      remark #15478: estimated potential speedup: 1.710 
+      remark #15488: --- end vector cost summary ---
+      remark #25439: unrolled with remainder by 2  
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+
+   LOOP BEGIN at main.cc(94,1)
+   <Remainder>
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(101,5)
+<Peeled loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(101,5)
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.165
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 116 
+   remark #15477: vector cost: 5.680 
+   remark #15478: estimated potential speedup: 18.060 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 3 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(101,5)
+<Remainder loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(115,1)
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ main.cc(125,7) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between at (125:7) and at (125:7)
+   remark #15346: vector dependence: assumed FLOW dependence between at (125:7) and at (125:7)
+   remark #15346: vector dependence: assumed FLOW dependence between at (125:7) and at (125:7)
+   remark #15346: vector dependence: assumed ANTI dependence between at (125:7) and at (125:7)
+   remark #25439: unrolled with remainder by 2  
+LOOP END
+
+LOOP BEGIN at main.cc(115,1)
+<Remainder>
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at main.cc(49,3) inlined into main.cc(84,5)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+
+LOOP BEGIN at main.cc(29,3) inlined into main.cc(91,23)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+LOOP END
+
+LOOP BEGIN at main.cc(49,3) inlined into main.cc(101,5)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+main.cc(54,33):remark #34051: REGISTER ALLOCATION : [main] main.cc:54
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rax rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      18
+            Global    :       9
+            Local     :       9
+        Regenerable   :       1
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ -nan%]
+            Writes    :       0 [0.00e+00 ~ -nan%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ -nan%]
+            Writes    :       0 [0.00e+00 ~ -nan%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: main(int, char **) [knl]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (main(int, char **)) [1/5=20.0%] main.cc(54,33)
+  -> EXTERN: (55,13) MPI_Init(int *, char ***)
+  -> EXTERN: (57,5) printf(const char *, ...)
+  -> EXTERN: (58,5) MPI_Abort(MPI_Comm, int)
+  -> INLINE (MANUAL): (64,13) atof(const char *) (isz = 5) (sz = 12)
+    -> EXTERN: /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:(28,10) strtod(const char *, char **)
+  -> EXTERN: (69,3) MPI_Comm_size(MPI_Comm, int *)
+  -> EXTERN: (70,3) MPI_Comm_rank(MPI_Comm, int *)
+  -> INLINE (MANUAL): (72,23) atoi(const char *) (isz = 7) (sz = 14)
+    -> EXTERN: /usr/include/stdlib.h:(280,16) strtol(const char *, char **, int)
+  -> INLINE (MANUAL): (73,32) atoi(const char *) (isz = 7) (sz = 14)
+    -> EXTERN: /usr/include/stdlib.h:(280,16) strtol(const char *, char **, int)
+  -> EXTERN: (74,3) __assert_fail(const char *, const char *, unsigned int, const char *)
+  -> EXTERN: (78,29) _mm_malloc(unsigned long long, unsigned long long)
+  -> EXTERN: (79,29) _mm_malloc(unsigned long long, unsigned long long)
+  -> EXTERN: (82,28) _mm_malloc(unsigned long long, unsigned long long)
+  -> INLINE: (84,5) initialize_buffers(float, long, float *, float *) (isz = 102) (sz = 113)
+    -> EXTERN: (47,23) sinf(float)
+    -> EXTERN: (51,17) L(float, float, float)
+    -> EXTERN: (51,78) L(float, float, float)
+  -> EXTERN: (87,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> EXTERN: (88,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> INLINE: (91,23) simulate_ref(float, long, int, float *, float *, int, int, long) (isz = 89) (sz = 110)
+    -> EXTERN: (32,25) L(float, float, float)
+    -> EXTERN: (37,5) MPI_Allgather(const void *, int, MPI_Datatype, void *, int, MPI_Datatype, MPI_Comm)
+  -> INLINE: (101,5) initialize_buffers(float, long, float *, float *) (isz = 102) (sz = 113)
+    -> EXTERN: (47,23) sinf(float)
+    -> EXTERN: (51,17) L(float, float, float)
+    -> EXTERN: (51,78) L(float, float, float)
+  -> EXTERN: (103,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> EXTERN: (104,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> EXTERN: (108,21) omp_get_wtime()
+  -> EXTERN: (109,20) simulate(float, long, int, float *, float *, int, int, long)
+  -> EXTERN: (110,21) omp_get_wtime()
+  -> EXTERN: (130,7) printf(const char *, ...)
+  -> EXTERN: (133,7) printf(const char *, ...)
+  -> EXTERN: (137,3) MPI_Finalize()
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(84,5)
+<Peeled loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(84,5)
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.165
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 116 
+   remark #15477: vector cost: 5.680 
+   remark #15478: estimated potential speedup: 18.060 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 3 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(84,5)
+<Remainder loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(30,1) inlined into main.cc(91,23)
+<Peeled loop for vectorization>
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.077
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(30,1) inlined into main.cc(91,23)
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.060
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15450: unmasked unaligned unit stride loads: 4 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 131 
+   remark #15477: vector cost: 26.930 
+   remark #15478: estimated potential speedup: 4.320 
+   remark #15484: vector function calls: 1 
+   remark #15487: type converts: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: L(float, float, float) with simdlen=16, actual parameter types: (uniform,uniform,vector)   [ main.cc(32,25) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -vecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at main.cc(30,1) inlined into main.cc(91,23)
+<Remainder loop for vectorization>
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.077
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(94,1)
+   remark #25399: memcopy generated
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at main.cc(94,1)
+      remark #15389: vectorization support: reference d_ref has unaligned access   [ main.cc(96,7) ]
+      remark #15389: vectorization support: reference d_ref_temp has unaligned access   [ main.cc(96,18) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15305: vectorization support: vector length 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.750
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15451: unmasked unaligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 5 
+      remark #15477: vector cost: 2.000 
+      remark #15478: estimated potential speedup: 1.710 
+      remark #15488: --- end vector cost summary ---
+      remark #25439: unrolled with remainder by 2  
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+
+   LOOP BEGIN at main.cc(94,1)
+   <Remainder>
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(101,5)
+<Peeled loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(101,5)
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.165
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 116 
+   remark #15477: vector cost: 5.680 
+   remark #15478: estimated potential speedup: 18.060 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 3 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(101,5)
+<Remainder loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1 has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(115,1)
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ main.cc(125,7) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between at (125:7) and at (125:7)
+   remark #15346: vector dependence: assumed FLOW dependence between at (125:7) and at (125:7)
+   remark #15346: vector dependence: assumed FLOW dependence between at (125:7) and at (125:7)
+   remark #15346: vector dependence: assumed ANTI dependence between at (125:7) and at (125:7)
+   remark #25439: unrolled with remainder by 2  
+LOOP END
+
+LOOP BEGIN at main.cc(115,1)
+<Remainder>
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at main.cc(49,3) inlined into main.cc(84,5)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+
+LOOP BEGIN at main.cc(29,3) inlined into main.cc(91,23)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+LOOP END
+
+LOOP BEGIN at main.cc(49,3) inlined into main.cc(101,5)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+main.cc(33,22):remark #34060: alignment of adjacent dense (unit-strided stencil) loads is (alignment, offset): (1, 0)
+main.cc(33,22):remark #34050: adjacent dense (unit-strided stencil) loads seem unprofitable to optimize.
+main.cc(33,22):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 4 }, step { 4 }, types { F32-V512, F32-V512, F32-V512 }, number of elements { 16 }, select mask { 0x000000007 }.
+main.cc(94,1):remark #34014: optimization advice for memcpy: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+main.cc(94,1):remark #34014: optimization advice for memcpy: increase the source's alignment to 16 (and use __assume_aligned) to speed up library implementation
+main.cc(94,1):remark #34026: call to memcpy implemented as a call to optimized library version
+main.cc(54,33):remark #34051: REGISTER ALLOCATION : [main.Z] main.cc:54
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   63[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm31 k0-k7]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   52[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm31 k0-k5]
+        
+    Routine temporaries
+        Total         :    2178
+            Global    :     397
+            Local     :    1781
+        Regenerable   :     330
+        Spilled       :     229
+        
+    Routine stack
+        Variables     :     278 bytes*
+            Reads     :      62 [3.65e+01 ~ 0.2%]
+            Writes    :      47 [1.45e+02 ~ 0.8%]
+        Spills        :    7320 bytes*
+            Reads     :     360 [2.67e+03 ~ 14.3%]
+            Writes    :     315 [9.98e+02 ~ 5.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: main(int, char **) [generic]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (main(int, char **)) [1/5=20.0%] main.cc(54,33)
+  -> EXTERN: (55,13) MPI_Init(int *, char ***)
+  -> EXTERN: (57,5) printf(const char *, ...)
+  -> EXTERN: (58,5) MPI_Abort(MPI_Comm, int)
+  -> INLINE (MANUAL): (64,13) atof(const char *) (isz = 5) (sz = 12)
+    -> EXTERN: /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:(28,10) strtod(const char *, char **)
+  -> EXTERN: (69,3) MPI_Comm_size(MPI_Comm, int *)
+  -> EXTERN: (70,3) MPI_Comm_rank(MPI_Comm, int *)
+  -> INLINE (MANUAL): (72,23) atoi(const char *) (isz = 7) (sz = 14)
+    -> EXTERN: /usr/include/stdlib.h:(280,16) strtol(const char *, char **, int)
+  -> INLINE (MANUAL): (73,32) atoi(const char *) (isz = 7) (sz = 14)
+    -> EXTERN: /usr/include/stdlib.h:(280,16) strtol(const char *, char **, int)
+  -> EXTERN: (74,3) __assert_fail(const char *, const char *, unsigned int, const char *)
+  -> EXTERN: (78,29) _mm_malloc(unsigned long long, unsigned long long)
+  -> EXTERN: (79,29) _mm_malloc(unsigned long long, unsigned long long)
+  -> EXTERN: (82,28) _mm_malloc(unsigned long long, unsigned long long)
+  -> INLINE: (84,5) initialize_buffers(float, long, float *, float *) (isz = 102) (sz = 113)
+    -> EXTERN: (47,23) sinf(float)
+    -> EXTERN: (51,17) L(float, float, float)
+    -> EXTERN: (51,78) L(float, float, float)
+  -> EXTERN: (87,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> EXTERN: (88,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> INLINE: (91,23) simulate_ref(float, long, int, float *, float *, int, int, long) (isz = 89) (sz = 110)
+    -> EXTERN: (32,25) L(float, float, float)
+    -> EXTERN: (37,5) MPI_Allgather(const void *, int, MPI_Datatype, void *, int, MPI_Datatype, MPI_Comm)
+  -> INLINE: (101,5) initialize_buffers(float, long, float *, float *) (isz = 102) (sz = 113)
+    -> EXTERN: (47,23) sinf(float)
+    -> EXTERN: (51,17) L(float, float, float)
+    -> EXTERN: (51,78) L(float, float, float)
+  -> EXTERN: (103,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> EXTERN: (104,3) MPI_Bcast(void *, int, MPI_Datatype, int, MPI_Comm)
+  -> EXTERN: (108,21) omp_get_wtime()
+  -> EXTERN: (109,20) simulate(float, long, int, float *, float *, int, int, long)
+  -> EXTERN: (110,21) omp_get_wtime()
+  -> EXTERN: (130,7) printf(const char *, ...)
+  -> EXTERN: (133,7) printf(const char *, ...)
+  -> EXTERN: (137,3) MPI_Finalize()
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(84,5)
+<Peeled loop for vectorization>
+   remark #25015: Estimate of max trip count of loop=3
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(84,5)
+   remark #15388: vectorization support: reference d_buf1 has aligned access   [ main.cc(47,5) ]
+   remark #15410: vectorization support: conversion from int to float will be emulated   [ main.cc(47,43) ]
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.116
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 116 
+   remark #15477: vector cost: 36.500 
+   remark #15478: estimated potential speedup: 3.080 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 3 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(84,5)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at main.cc(30,1) inlined into main.cc(91,23)
+<Peeled loop for vectorization>
+   remark #25015: Estimate of max trip count of loop=3
+LOOP END
+
+LOOP BEGIN at main.cc(30,1) inlined into main.cc(91,23)
+   remark #15388: vectorization support: reference d_t1 has aligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15388: vectorization support: reference d_t1 has aligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15410: vectorization support: conversion from int to float will be emulated   [ main.cc(32,39) ]
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.171
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15450: unmasked unaligned unit stride loads: 3 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 131 
+   remark #15477: vector cost: 46.750 
+   remark #15478: estimated potential speedup: 2.730 
+   remark #15484: vector function calls: 1 
+   remark #15487: type converts: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: L(float, float, float) with simdlen=4, actual parameter types: (uniform,uniform,vector)   [ main.cc(32,25) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector,vector)
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at main.cc(30,1) inlined into main.cc(91,23)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at main.cc(94,1)
+   remark #25399: memcopy generated
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at main.cc(94,1)
+      remark #15389: vectorization support: reference d_ref has unaligned access   [ main.cc(96,7) ]
+      remark #15389: vectorization support: reference d_ref_temp has unaligned access   [ main.cc(96,18) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15305: vectorization support: vector length 4
+      remark #15309: vectorization support: normalized vectorization overhead 1.000
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15451: unmasked unaligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 5 
+      remark #15477: vector cost: 1.500 
+      remark #15478: estimated potential speedup: 2.850 
+      remark #15488: --- end vector cost summary ---
+      remark #25439: unrolled with remainder by 2  
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+
+   LOOP BEGIN at main.cc(94,1)
+   <Remainder>
+      remark #25015: Estimate of max trip count of loop=24
+   LOOP END
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(101,5)
+<Peeled loop for vectorization>
+   remark #25015: Estimate of max trip count of loop=3
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(101,5)
+   remark #15388: vectorization support: reference d_buf1 has aligned access   [ main.cc(47,5) ]
+   remark #15410: vectorization support: conversion from int to float will be emulated   [ main.cc(47,43) ]
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.116
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 116 
+   remark #15477: vector cost: 36.500 
+   remark #15478: estimated potential speedup: 3.080 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 3 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at main.cc(45,1) inlined into main.cc(101,5)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at main.cc(115,1)
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ main.cc(125,7) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between at (125:7) and at (125:7)
+   remark #15346: vector dependence: assumed FLOW dependence between at (125:7) and at (125:7)
+   remark #15346: vector dependence: assumed FLOW dependence between at (125:7) and at (125:7)
+   remark #15346: vector dependence: assumed ANTI dependence between at (125:7) and at (125:7)
+   remark #25439: unrolled with remainder by 2  
+LOOP END
+
+LOOP BEGIN at main.cc(115,1)
+<Remainder>
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at main.cc(49,3) inlined into main.cc(84,5)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+
+LOOP BEGIN at main.cc(29,3) inlined into main.cc(91,23)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+LOOP END
+
+LOOP BEGIN at main.cc(49,3) inlined into main.cc(101,5)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+main.cc(33,22):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 4 }, step { 4 }, types { F32-V128, F32-V128, F32-V128 }, number of elements { 4 }, select mask { 0x000000007 }.
+main.cc(94,1):remark #34014: optimization advice for memcpy: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+main.cc(94,1):remark #34014: optimization advice for memcpy: increase the source's alignment to 16 (and use __assume_aligned) to speed up library implementation
+main.cc(94,1):remark #34026: call to memcpy implemented as a call to optimized library version
+main.cc(54,33):remark #34051: REGISTER ALLOCATION : [main.A] main.cc:54
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   30[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm15]
+        
+    Routine temporaries
+        Total         :    1010
+            Global    :     220
+            Local     :     790
+        Regenerable   :     303
+        Spilled       :      31
+        
+    Routine stack
+        Variables     :     278 bytes*
+            Reads     :      62 [3.65e+01 ~ 0.9%]
+            Writes    :      47 [1.45e+02 ~ 3.7%]
+        Spills        :     288 bytes*
+            Reads     :      96 [2.26e+02 ~ 5.8%]
+            Writes    :      79 [1.01e+02 ~ 2.6%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: simulate_ref(float, long, int, float *, float *, int, int, long)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (simulate_ref(float, long, int, float *, float *, int, int, long)) [4/5=80.0%] main.cc(18,184)
+  -> EXTERN: (32,25) L(float, float, float)
+  -> EXTERN: (37,5) MPI_Allgather(const void *, int, MPI_Datatype, void *, int, MPI_Datatype, MPI_Comm)
+
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at main.cc(30,1)
+remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at main.cc(30,1)
+<Peeled loop for vectorization>
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.077
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(30,1)
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.060
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15450: unmasked unaligned unit stride loads: 4 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 131 
+   remark #15477: vector cost: 26.930 
+   remark #15478: estimated potential speedup: 4.320 
+   remark #15484: vector function calls: 1 
+   remark #15487: type converts: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: L(float, float, float) with simdlen=16, actual parameter types: (uniform,uniform,vector)   [ main.cc(32,25) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -vecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at main.cc(30,1)
+<Remainder loop for vectorization>
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.077
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at main.cc(29,3)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+main.cc(18,184):remark #34051: REGISTER ALLOCATION : [_Z12simulate_reffliPfS_iil] main.cc:18
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    9[ rax rdx rcx rsi rdi r8-r9 r12 zmm0]
+        
+    Routine temporaries
+        Total         :      38
+            Global    :      14
+            Local     :      24
+        Regenerable   :       1
+        Spilled       :       4
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: simulate_ref(float, long, int, float *, float *, int, int, long) [knl]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (simulate_ref(float, long, int, float *, float *, int, int, long)) [4/5=80.0%] main.cc(18,184)
+  -> EXTERN: (32,25) L(float, float, float)
+  -> EXTERN: (37,5) MPI_Allgather(const void *, int, MPI_Datatype, void *, int, MPI_Datatype, MPI_Comm)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at main.cc(30,1)
+<Peeled loop for vectorization>
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.077
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(30,1)
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.060
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15450: unmasked unaligned unit stride loads: 4 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 131 
+   remark #15477: vector cost: 26.930 
+   remark #15478: estimated potential speedup: 4.320 
+   remark #15484: vector function calls: 1 
+   remark #15487: type converts: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: L(float, float, float) with simdlen=16, actual parameter types: (uniform,uniform,vector)   [ main.cc(32,25) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector,vector)
+   remark #15350: The function ISA does not match the compilation target. For better SIMD performance, consider using -vecabi=cmdtarget compiler switch or "processor" clause in vector function declaration
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at main.cc(30,1)
+<Remainder loop for vectorization>
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15389: vectorization support: reference d_t1 has unaligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.077
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at main.cc(29,3)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+main.cc(33,22):remark #34060: alignment of adjacent dense (unit-strided stencil) loads is (alignment, offset): (1, 0)
+main.cc(33,22):remark #34050: adjacent dense (unit-strided stencil) loads seem unprofitable to optimize.
+main.cc(33,22):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 4 }, step { 4 }, types { F32-V512, F32-V512, F32-V512 }, number of elements { 16 }, select mask { 0x000000007 }.
+main.cc(18,184):remark #34051: REGISTER ALLOCATION : [_Z12simulate_reffliPfS_iil.Z] main.cc:18
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   63[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm31 k0-k7]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   52[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm31 k0-k5]
+        
+    Routine temporaries
+        Total         :     710
+            Global    :     166
+            Local     :     544
+        Regenerable   :      65
+        Spilled       :      88
+        
+    Routine stack
+        Variables     :      68 bytes*
+            Reads     :       7 [1.50e+01 ~ 0.1%]
+            Writes    :      14 [1.16e+02 ~ 0.6%]
+        Spills        :    3008 bytes*
+            Reads     :     135 [2.63e+03 ~ 14.5%]
+            Writes    :     122 [9.83e+02 ~ 5.4%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: simulate_ref(float, long, int, float *, float *, int, int, long) [generic]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (simulate_ref(float, long, int, float *, float *, int, int, long)) [4/5=80.0%] main.cc(18,184)
+  -> EXTERN: (32,25) L(float, float, float)
+  -> EXTERN: (37,5) MPI_Allgather(const void *, int, MPI_Datatype, void *, int, MPI_Datatype, MPI_Comm)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at main.cc(30,1)
+<Peeled loop for vectorization>
+   remark #25015: Estimate of max trip count of loop=3
+LOOP END
+
+LOOP BEGIN at main.cc(30,1)
+   remark #15388: vectorization support: reference d_t1 has aligned access   [ main.cc(33,7) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,22) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(33,33) ]
+   remark #15389: vectorization support: reference d_t has unaligned access   [ main.cc(34,35) ]
+   remark #15388: vectorization support: reference d_t1 has aligned access   [ main.cc(35,19) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15410: vectorization support: conversion from int to float will be emulated   [ main.cc(32,39) ]
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.171
+   remark #15301: OpenMP SIMD LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15450: unmasked unaligned unit stride loads: 3 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 131 
+   remark #15477: vector cost: 46.750 
+   remark #15478: estimated potential speedup: 2.730 
+   remark #15484: vector function calls: 1 
+   remark #15487: type converts: 1 
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: L(float, float, float) with simdlen=4, actual parameter types: (uniform,uniform,vector)   [ main.cc(32,25) ]
+   remark #15492: A suitable vector variant was found (out of 2) with xmm, simdlen=4, unmasked, formal parameter types: (vector,vector,vector)
+   remark #15493: --- end vector function matching report ---
+LOOP END
+
+LOOP BEGIN at main.cc(30,1)
+<Remainder loop for vectorization>
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at main.cc(29,3)
+   remark #15543: loop was not vectorized: loop with function call not considered an optimization candidate.
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+main.cc(33,22):remark #34055: adjacent dense (unit-strided stencil) loads are not optimized. Details: stride { 4 }, step { 4 }, types { F32-V128, F32-V128, F32-V128 }, number of elements { 4 }, select mask { 0x000000007 }.
+main.cc(18,184):remark #34051: REGISTER ALLOCATION : [_Z12simulate_reffliPfS_iil.A] main.cc:18
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   30[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm15]
+        
+    Routine temporaries
+        Total         :     240
+            Global    :      67
+            Local     :     173
+        Regenerable   :      57
+        Spilled       :      10
+        
+    Routine stack
+        Variables     :      68 bytes*
+            Reads     :       7 [1.50e+01 ~ 0.4%]
+            Writes    :      14 [1.16e+02 ~ 3.2%]
+        Spills        :     120 bytes*
+            Reads     :      31 [2.19e+02 ~ 6.1%]
+            Writes    :      25 [9.55e+01 ~ 2.7%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: initialize_buffers(float, long, float *, float *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (initialize_buffers(float, long, float *, float *)) [5/5=100.0%] main.cc(42,97)
+  -> EXTERN: (47,23) sinf(float)
+  -> EXTERN: (51,17) L(float, float, float)
+  -> EXTERN: (51,78) L(float, float, float)
+
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at main.cc(45,1)
+remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at main.cc(45,1)
+<Peeled loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1[i] has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(45,1)
+   remark #15389: vectorization support: reference d_buf1[i] has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.165
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 116 
+   remark #15477: vector cost: 5.680 
+   remark #15478: estimated potential speedup: 18.060 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 3 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at main.cc(45,1)
+<Remainder loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1[i] has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at main.cc(49,3)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+main.cc(42,97):remark #34051: REGISTER ALLOCATION : [_Z18initialize_buffersflPfS_] main.cc:42
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rax rdx rcx rsi rdi zmm0]
+        
+    Routine temporaries
+        Total         :      26
+            Global    :      11
+            Local     :      15
+        Regenerable   :       1
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: initialize_buffers(float, long, float *, float *) [knl]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (initialize_buffers(float, long, float *, float *)) [5/5=100.0%] main.cc(42,97)
+  -> EXTERN: (47,23) sinf(float)
+  -> EXTERN: (51,17) L(float, float, float)
+  -> EXTERN: (51,78) L(float, float, float)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at main.cc(45,1)
+<Peeled loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1[i] has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: PEEL LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at main.cc(45,1)
+   remark #15389: vectorization support: reference d_buf1[i] has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.165
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 116 
+   remark #15477: vector cost: 5.680 
+   remark #15478: estimated potential speedup: 18.060 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 3 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at main.cc(45,1)
+<Remainder loop for vectorization>
+   remark #15389: vectorization support: reference d_buf1[i] has unaligned access   [ main.cc(47,5) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 16
+   remark #15309: vectorization support: normalized vectorization overhead 0.187
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at main.cc(49,3)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+main.cc(42,97):remark #34051: REGISTER ALLOCATION : [_Z18initialize_buffersflPfS_.Z] main.cc:42
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   63[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm31 k0-k7]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   49[ rax rdx rcx rbx rsi rdi r8-r15 zmm0-zmm31 k0-k1 k4]
+        
+    Routine temporaries
+        Total         :     566
+            Global    :      84
+            Local     :     482
+        Regenerable   :      58
+        Spilled       :      69
+        
+    Routine stack
+        Variables     :      52 bytes*
+            Reads     :      10 [2.20e+01 ~ 0.7%]
+            Writes    :       8 [2.40e+01 ~ 0.8%]
+        Spills        :    2184 bytes*
+            Reads     :     104 [4.09e+02 ~ 13.5%]
+            Writes    :      91 [2.10e+02 ~ 7.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: initialize_buffers(float, long, float *, float *) [generic]
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (initialize_buffers(float, long, float *, float *)) [5/5=100.0%] main.cc(42,97)
+  -> EXTERN: (47,23) sinf(float)
+  -> EXTERN: (51,17) L(float, float, float)
+  -> EXTERN: (51,78) L(float, float, float)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at main.cc(45,1)
+<Peeled loop for vectorization>
+   remark #25015: Estimate of max trip count of loop=3
+LOOP END
+
+LOOP BEGIN at main.cc(45,1)
+   remark #15388: vectorization support: reference d_buf1[i] has aligned access   [ main.cc(47,5) ]
+   remark #15410: vectorization support: conversion from int to float will be emulated   [ main.cc(47,43) ]
+   remark #15305: vectorization support: vector length 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.116
+   remark #15417: vectorization support: number of FP up converts: single precision to double precision 1   [ main.cc(47,23) ]
+   remark #15418: vectorization support: number of FP down converts: double precision to single precision 1   [ main.cc(47,23) ]
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 116 
+   remark #15477: vector cost: 36.500 
+   remark #15478: estimated potential speedup: 3.080 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 3 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at main.cc(45,1)
+<Remainder loop for vectorization>
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at main.cc(49,3)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+main.cc(42,97):remark #34051: REGISTER ALLOCATION : [_Z18initialize_buffersflPfS_.A] main.cc:42
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   28[ rax rdx rcx rbx rsi rdi r8-r10 r12-r15 zmm0-zmm14]
+        
+    Routine temporaries
+        Total         :     220
+            Global    :      46
+            Local     :     174
+        Regenerable   :      49
+        Spilled       :       9
+        
+    Routine stack
+        Variables     :      52 bytes*
+            Reads     :      10 [2.20e+01 ~ 2.8%]
+            Writes    :       8 [2.40e+01 ~ 3.0%]
+        Spills        :     112 bytes*
+            Reads     :      24 [4.22e+01 ~ 5.3%]
+            Writes    :      21 [2.84e+01 ~ 3.6%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
